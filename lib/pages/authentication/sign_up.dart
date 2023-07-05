@@ -40,6 +40,42 @@ class _SignUpPageState extends State<SignUpPage> {
       return;
     }
 
+    if (name.text.isEmpty) {
+      error = true;
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text(
+          "Please enter a name",
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.red,
+      ));
+      return;
+    }
+
+    if (email.text.isEmpty) {
+      error = true;
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text(
+          "Please enter a valid email address",
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.red,
+      ));
+      return;
+    }
+
+    if (password.text.isEmpty) {
+      error = true;
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text(
+          "Please enter a password",
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.red,
+      ));
+      return;
+    }
+
     try {
       error = false;
       await Provider.of<AuthService>(context, listen: false)
