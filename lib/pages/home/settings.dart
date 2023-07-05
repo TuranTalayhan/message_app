@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:message_app/services/auth_service.dart';
+import 'package:provider/provider.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -9,6 +11,21 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
+  String getDisplayname() {
+    try {
+      return Provider.of<AuthService>(context, listen: false).displayName;
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          e.toString(),
+          style: const TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.red,
+      ));
+      return "error";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +34,7 @@ class _SettingsState extends State<Settings> {
         child: ListView(
           children: [
             ListTile(
-              title: const Text("Username"),
+              title: Text(getDisplayname()),
               subtitle: const Text("status"),
               trailing: IconButton(
                   onPressed: () {},

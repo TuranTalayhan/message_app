@@ -43,6 +43,7 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   font_awesome_flutter: ^10.5.0
   material_design_icons_flutter: ^7.0.7296
+  cloud_firestore: ^4.8.2
 flutter_native_splash:
   color: "#d9d9d9"
   image: assets/MessageAppLogo.png

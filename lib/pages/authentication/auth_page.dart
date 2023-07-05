@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:message_app/services/auth_service.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
@@ -113,9 +112,7 @@ class _AuthPageState extends State<AuthPage> {
                       ),
                       const SizedBox(width: 20),
                       OutlinedButton(
-                        onPressed: () {
-                          AuthService().signInWithGoogle();
-                        },
+                        onPressed: () {},
                         style: ButtonStyle(
                             alignment: Alignment.center,
                             shape:
