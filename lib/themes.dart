@@ -19,10 +19,12 @@ class Themes {
   static ThemeData dark = ThemeData(
       brightness: Brightness.dark,
       primarySwatch: Colors.teal,
-      navigationBarTheme: NavigationBarThemeData(
-          backgroundColor: ThemeData.dark().scaffoldBackgroundColor,
-          iconTheme: MaterialStateProperty.all(
-              const IconThemeData(color: Colors.white))),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: ThemeData.dark().scaffoldBackgroundColor,
+        selectedIconTheme: const IconThemeData(color: Colors.teal),
+        unselectedIconTheme: const IconThemeData(color: Colors.grey),
+        selectedLabelStyle: const TextStyle(fontSize: 12),
+      ),
       appBarTheme: AppBarTheme(
           backgroundColor: ThemeData.dark().scaffoldBackgroundColor,
           iconTheme: const IconThemeData(color: Colors.white)),

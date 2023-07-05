@@ -45,10 +45,10 @@ class _ResetPasswordState extends State<ResetPassword> {
         elevation: 0,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(40.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(children: [
           const SizedBox(
-            height: 150,
+            height: 140,
           ),
           const Text(
             "Enter your email adress",

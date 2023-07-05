@@ -64,11 +64,11 @@ class _SignUpPageState extends State<SignUpPage> {
           elevation: 0,
         ),
         body: Padding(
-          padding: const EdgeInsets.all(40),
+          padding: const EdgeInsets.all(20),
           child: Column(
             children: [
               const Padding(
-                padding: EdgeInsets.all(20.0),
+                padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
                 child: Text(
                   "Sign up with Email",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
@@ -87,7 +87,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                     child: TextFormField(
                         controller: name,
                         decoration: const InputDecoration(
@@ -99,7 +99,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 TextStyle(fontSize: 20, color: Colors.teal))),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                     child: TextFormField(
                         controller: email,
                         decoration: const InputDecoration(
@@ -111,7 +111,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 TextStyle(fontSize: 20, color: Colors.teal))),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                     child: TextFormField(
                         controller: password,
                         obscureText: true,
@@ -124,7 +124,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 TextStyle(fontSize: 20, color: Colors.teal))),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                     child: TextFormField(
                         controller: passwordConfirm,
                         obscureText: true,

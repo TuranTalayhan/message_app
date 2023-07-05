@@ -52,45 +52,42 @@ class _AuthPageState extends State<AuthPage> {
                       ],
                     ),
                   ),
-                  const SizedBox(
-                    height: 30,
-                  ),
                   const Padding(
-                    padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                    padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                     child: Text(
                       "Connect",
-                      style: TextStyle(fontSize: 85, color: Colors.white),
+                      style: TextStyle(fontSize: 80, color: Colors.white),
                     ),
                   ),
                   const Padding(
-                    padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                    padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                     child: Text(
                       "friends",
-                      style: TextStyle(fontSize: 85, color: Colors.white),
+                      style: TextStyle(fontSize: 80, color: Colors.white),
                     ),
                   ),
                   const Padding(
-                    padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                    padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                     child: Text(
                       "easily &",
                       style: TextStyle(
-                          fontSize: 75.0,
+                          fontSize: 70.0,
                           fontWeight: FontWeight.bold,
                           color: Colors.white),
                     ),
                   ),
                   const Padding(
-                    padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                    padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                     child: Text(
                       "quickly",
                       style: TextStyle(
-                          fontSize: 75.0,
+                          fontSize: 70.0,
                           fontWeight: FontWeight.bold,
                           color: Colors.white),
                     ),
                   ),
                   const Padding(
-                    padding: EdgeInsets.fromLTRB(40, 20, 40, 0),
+                    padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
                     child: Text(
                       "Our chat app is the perfect way to stay connected with friends and family.",
                       style: TextStyle(color: Colors.white70, fontSize: 18),
@@ -145,7 +142,7 @@ class _AuthPageState extends State<AuthPage> {
                     ],
                   ),
                   const Padding(
-                    padding: EdgeInsets.fromLTRB(40, 20, 40, 20),
+                    padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
                     child: Row(children: <Widget>[
                       Expanded(child: Divider(color: Colors.white70)),
                       Padding(

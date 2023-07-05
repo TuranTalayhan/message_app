@@ -47,11 +47,11 @@ class _LoginPageState extends State<LoginPage> {
           elevation: 0,
         ),
         body: Padding(
-          padding: const EdgeInsets.all(40),
+          padding: const EdgeInsets.all(20),
           child: Column(
             children: [
               const Padding(
-                padding: EdgeInsets.all(20.0),
+                padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
                 child: Text(
                   "Log in to MessageApp",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
