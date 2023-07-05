@@ -15,28 +15,21 @@ class NavigationBarPage extends StatefulWidget {
   State<NavigationBarPage> createState() => _NavigationBarPageState();
 }
 
-final bool isDarkMode =
-    SchedulerBinding.instance.platformDispatcher.platformBrightness ==
-        Brightness.dark;
-
-int currentPageIndex = 0;
-
-final widgets = <Widget>[
-  const Chats(),
-  const Calls(),
-  const Contacts(),
-  const Settings()
-];
-
 class _NavigationBarPageState extends State<NavigationBarPage> {
+  int _currentPageIndex = 0;
+
+  final _widgets = <Widget>[
+    const Chats(),
+    const Calls(),
+    const Contacts(),
+    const Settings()
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        leading: IconButton(
-            onPressed: () {},
-            icon: const FaIcon(FontAwesomeIcons.magnifyingGlass)),
+        leading: IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
         actions: [
           IconButton(
               onPressed: () async {
@@ -53,7 +46,7 @@ class _NavigationBarPageState extends State<NavigationBarPage> {
                   ));
                 }
               },
-              icon: const FaIcon(FontAwesomeIcons.solidUser)),
+              icon: const Icon(Icons.person)),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -84,14 +77,14 @@ class _NavigationBarPageState extends State<NavigationBarPage> {
               ),
               label: "Settings")
         ],
-        currentIndex: currentPageIndex,
+        currentIndex: _currentPageIndex,
         onTap: (int index) {
           setState(() {
-            currentPageIndex = index;
+            _currentPageIndex = index;
           });
         },
       ),
-      body: widgets[currentPageIndex],
+      body: _widgets[_currentPageIndex],
     );
   }
 }

@@ -27,7 +27,6 @@ class AuthService extends ChangeNotifier {
       userCredential.user!.updateDisplayName(name);
       //create a document with user in Firestore
       _firestore.collection("users").doc(userCredential.user!.uid).set({
-        "uid": userCredential.user!.uid,
         "email": email,
         "displayName": name,
         "status": "Hey there! I am using MessageApp",

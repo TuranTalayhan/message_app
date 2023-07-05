@@ -11,21 +11,28 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final bool isDarkMode =
+  final bool _isDarkMode =
       SchedulerBinding.instance.platformDispatcher.platformBrightness ==
           Brightness.dark;
 
-  final email = TextEditingController();
+  final _email = TextEditingController();
 
-  final password = TextEditingController();
+  final _password = TextEditingController();
 
-  late bool error;
+  late bool _error;
 
-  bool isLoading = false;
+  bool _isLoading = false;
 
-  Future<void> signInUser() async {
-    if (email.text.isEmpty) {
-      error = true;
+  @override
+  void dispose() {
+    _email.dispose();
+    _password.dispose();
+    super.dispose();
+  }
+
+  Future<void> _signInUser() async {
+    if (_email.text.isEmpty) {
+      _error = true;
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text(
           "Please enter a valid email address",
@@ -36,8 +43,8 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    if (password.text.isEmpty) {
-      error = true;
+    if (_password.text.isEmpty) {
+      _error = true;
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text(
           "Please enter a password",
@@ -49,11 +56,11 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     try {
-      error = false;
+      _error = false;
       await Provider.of<AuthService>(context, listen: false)
-          .signInWithEmailAndPassword(email.text, password.text);
+          .signInWithEmailAndPassword(_email.text, _password.text);
     } catch (e) {
-      error = true;
+      _error = true;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(
           e.toString(),
@@ -85,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
                 "Welcome back! Sign in using your email to continue",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: isDarkMode ? Colors.white70 : Colors.grey[700],
+                  color: _isDarkMode ? Colors.white70 : Colors.grey[700],
                   fontSize: 15,
                 ),
               ),
@@ -96,7 +103,7 @@ class _LoginPageState extends State<LoginPage> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                     child: TextFormField(
-                        controller: email,
+                        controller: _email,
                         decoration: const InputDecoration(
                             contentPadding:
                                 EdgeInsets.symmetric(vertical: 20.0),
@@ -108,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                     child: TextFormField(
-                        controller: password,
+                        controller: _password,
                         obscureText: true,
                         decoration: const InputDecoration(
                             contentPadding:
@@ -121,17 +128,17 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 60),
                   SizedBox(
                       width: MediaQuery.of(context).size.width - 70,
-                      child: !isLoading
+                      child: !_isLoading
                           ? TextButton(
                               onPressed: () async {
                                 setState(() {
-                                  isLoading = true;
+                                  _isLoading = true;
                                 });
-                                await signInUser();
+                                await _signInUser();
                                 setState(() {
-                                  isLoading = false;
+                                  _isLoading = false;
                                 });
-                                if (!error && context.mounted) {
+                                if (!_error && context.mounted) {
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(const SnackBar(
                                           content: Text(

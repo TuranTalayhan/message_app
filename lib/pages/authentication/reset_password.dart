@@ -11,23 +11,29 @@ class ResetPassword extends StatefulWidget {
 }
 
 class _ResetPasswordState extends State<ResetPassword> {
-  final bool isDarkMode =
+  final bool _isDarkMode =
       SchedulerBinding.instance.platformDispatcher.platformBrightness ==
           Brightness.dark;
 
-  final email = TextEditingController();
+  final _email = TextEditingController();
 
-  late bool error;
+  late bool _error;
 
-  bool isLoading = false;
+  bool _isLoading = false;
 
-  Future<void> resetPassword() async {
+  @override
+  void dispose() {
+    _email.dispose();
+    super.dispose();
+  }
+
+  Future<void> _resetPassword() async {
     try {
-      error = false;
+      _error = false;
       await Provider.of<AuthService>(context, listen: false)
-          .sendPasswordResetEmail(email.text);
+          .sendPasswordResetEmail(_email.text);
     } catch (e) {
-      error = true;
+      _error = true;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(
           e.toString(),
@@ -59,13 +65,13 @@ class _ResetPasswordState extends State<ResetPassword> {
             "Enter your email adress to receive a password reset email",
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: isDarkMode ? Colors.white70 : Colors.grey[700],
+              color: _isDarkMode ? Colors.white70 : Colors.grey[700],
               fontSize: 15,
             ),
           ),
           const SizedBox(height: 50),
           TextFormField(
-              controller: email,
+              controller: _email,
               decoration: const InputDecoration(
                   contentPadding: EdgeInsets.symmetric(vertical: 20.0),
                   labelText: "Your email",
@@ -74,17 +80,17 @@ class _ResetPasswordState extends State<ResetPassword> {
           const SizedBox(height: 60),
           SizedBox(
             width: MediaQuery.of(context).size.width - 70,
-            child: !isLoading
+            child: !_isLoading
                 ? TextButton(
                     onPressed: () async {
                       setState(() {
-                        isLoading = true;
+                        _isLoading = true;
                       });
-                      await resetPassword();
+                      await _resetPassword();
                       setState(() {
-                        isLoading = false;
+                        _isLoading = false;
                       });
-                      if (!error && context.mounted) {
+                      if (!_error && context.mounted) {
                         ScaffoldMessenger.of(context)
                             .showSnackBar(const SnackBar(
                           content: Text(

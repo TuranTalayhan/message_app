@@ -11,6 +11,8 @@ import 'package:message_app/services/auth_service.dart';
 import 'package:message_app/themes.dart';
 import 'package:provider/provider.dart';
 
+import 'pages/home/settings/profile.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -31,11 +33,11 @@ class MyApp extends StatelessWidget {
       initialRoute: "/auth_gate",
       routes: {
         "/auth_gate": (context) => const AuthGate(),
-        "/messages": (context) => const NavigationBarPage(),
         "/auth_page": (context) => const AuthPage(),
         "/login_page": (context) => const LoginPage(),
         "/sign_up_page": (context) => const SignUpPage(),
         "/reset_password": (context) => const ResetPassword(),
+        "/profile": (context) => const Profile(),
       },
     );
   }

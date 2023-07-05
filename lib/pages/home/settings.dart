@@ -11,7 +11,7 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  String getDisplayname() {
+  String _getDisplayname() {
     try {
       return Provider.of<AuthService>(context, listen: false).displayName;
     } catch (e) {
@@ -33,29 +33,34 @@ class _SettingsState extends State<Settings> {
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: ListView(
           children: [
-            ListTile(
-              title: Text(getDisplayname()),
-              subtitle: const Text("status"),
-              trailing: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.qr_code_scanner_rounded,
-                    color: Colors.teal,
-                    size: 30,
-                  )),
-              leading: Container(
-                  height: 50,
-                  width: 50,
-                  decoration: BoxDecoration(
-                    color: Colors.teal[50]!.withOpacity(0.5),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Center(child: Icon(Icons.person))),
+            InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, "/profile");
+              },
+              child: ListTile(
+                title: Text(_getDisplayname()),
+                subtitle: const Text("status"),
+                trailing: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.qr_code_scanner_rounded,
+                      color: Colors.teal,
+                      size: 30,
+                    )),
+                leading: Container(
+                    height: 50,
+                    width: 50,
+                    decoration: BoxDecoration(
+                      color: Colors.teal[50]!.withOpacity(0.5),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Center(child: Icon(Icons.person))),
+              ),
             ),
             const SizedBox(height: 10),
             const Divider(),
             const SizedBox(height: 10),
-            GestureDetector(
+            InkWell(
               onTap: () {},
               child: ListTile(
                 title: const Text("Account"),
@@ -71,7 +76,7 @@ class _SettingsState extends State<Settings> {
               ),
             ),
             const SizedBox(height: 10),
-            GestureDetector(
+            InkWell(
               onTap: () {},
               child: ListTile(
                 title: const Text("Chat"),
@@ -87,7 +92,7 @@ class _SettingsState extends State<Settings> {
               ),
             ),
             const SizedBox(height: 10),
-            GestureDetector(
+            InkWell(
               onTap: () {},
               child: ListTile(
                 title: const Text("Notifications"),
@@ -104,7 +109,7 @@ class _SettingsState extends State<Settings> {
               ),
             ),
             const SizedBox(height: 10),
-            GestureDetector(
+            InkWell(
               onTap: () {},
               child: ListTile(
                 title: const Text("Help"),
@@ -120,7 +125,7 @@ class _SettingsState extends State<Settings> {
               ),
             ),
             const SizedBox(height: 10),
-            GestureDetector(
+            InkWell(
               onTap: () {},
               child: ListTile(
                 title: const Text("Storage and data"),
@@ -136,7 +141,7 @@ class _SettingsState extends State<Settings> {
               ),
             ),
             const SizedBox(height: 10),
-            GestureDetector(
+            InkWell(
               onTap: () {},
               child: ListTile(
                 title: const Text("Invite a friend"),
