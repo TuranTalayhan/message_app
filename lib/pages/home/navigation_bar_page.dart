@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:message_app/pages/home/calls.dart';
-import 'package:message_app/pages/home/chats.dart';
-import 'package:message_app/pages/home/contacts.dart';
-import 'package:message_app/pages/home/settings.dart';
-import 'package:message_app/services/auth_service.dart';
 import 'package:provider/provider.dart';
+import '../../services/auth_service.dart';
+import 'calls.dart';
+import 'chats.dart';
+import 'contacts.dart';
+import 'settings.dart';
 
 class NavigationBarPage extends StatefulWidget {
   const NavigationBarPage({super.key});

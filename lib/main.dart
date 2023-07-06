@@ -1,17 +1,15 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:message_app/firebase_options.dart';
-import 'package:message_app/pages/authentication/auth_gate.dart';
-import 'package:message_app/pages/authentication/auth_page.dart';
-import 'package:message_app/pages/authentication/login_page.dart';
-import 'package:message_app/pages/authentication/reset_password.dart';
-import 'package:message_app/pages/authentication/sign_up.dart';
-import 'package:message_app/pages/home/navigation_bar_page.dart';
-import 'package:message_app/services/auth_service.dart';
-import 'package:message_app/themes.dart';
 import 'package:provider/provider.dart';
-
+import 'firebase_options.dart';
+import 'pages/authentication/auth_gate.dart';
+import 'pages/authentication/auth_page.dart';
+import 'pages/authentication/login_page.dart';
+import 'pages/authentication/reset_password.dart';
+import 'pages/authentication/sign_up.dart';
 import 'pages/home/settings/profile.dart';
+import 'services/auth_service.dart';
+import 'themes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

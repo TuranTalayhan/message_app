@@ -18,17 +18,17 @@ class AuthService extends ChangeNotifier {
 
   //sign up with email
   Future<UserCredential> signUpWithEmailAndPassword(
-      String name, String email, String password) async {
+      String displayName, String email, String password) async {
     try {
       //create user in Firebase auth
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
       //update displayname in Firebase auth
-      userCredential.user!.updateDisplayName(name);
+      userCredential.user!.updateDisplayName(displayName);
       //create a document with user in Firestore
       _firestore.collection("users").doc(userCredential.user!.uid).set({
         "email": email,
-        "displayName": name,
+        "displayName": displayName,
         "status": "Hey there! I am using MessageApp",
       });
       return userCredential;
@@ -75,6 +75,38 @@ class AuthService extends ChangeNotifier {
       return await _auth.signOut();
     } on FirebaseAuthException catch (e) {
       throw Exception(e.code);
+    }
+  }
+
+  Future<void> updateInfo({String? displayName, String? status}) async {
+    if (status == null) {
+      try {
+        await _auth.currentUser!.updateDisplayName(displayName);
+        await _firestore.collection("users").doc(_auth.currentUser!.uid).set({
+          "displayName": displayName,
+        }, SetOptions(merge: true));
+      } catch (e) {
+        throw Exception(e.toString());
+      }
+    } else if (displayName == null) {
+      try {
+        await _auth.currentUser!.updateDisplayName(displayName);
+        await _firestore.collection("users").doc(_auth.currentUser!.uid).set({
+          "status": status,
+        }, SetOptions(merge: true));
+      } catch (e) {
+        throw Exception(e.toString());
+      }
+    } else {
+      try {
+        await _auth.currentUser!.updateDisplayName(displayName);
+        await _firestore.collection("users").doc(_auth.currentUser!.uid).set({
+          "displayName": displayName,
+          "status": status,
+        }, SetOptions(merge: true));
+      } catch (e) {
+        throw Exception(e.toString());
+      }
     }
   }
 

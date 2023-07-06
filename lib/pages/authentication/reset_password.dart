@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:message_app/services/auth_service.dart';
 import 'package:provider/provider.dart';
+import '../../services/auth_service.dart';
 
 class ResetPassword extends StatefulWidget {
   const ResetPassword({super.key});

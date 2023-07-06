@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:message_app/services/auth_service.dart';
 import 'package:provider/provider.dart';
+import '../../services/auth_service.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -112,6 +112,7 @@ class _SignUpPageState extends State<SignUpPage> {
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
+              const SizedBox(height: 20),
               const Padding(
                 padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
                 child: Text(
