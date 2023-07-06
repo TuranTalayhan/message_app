@@ -92,11 +92,30 @@ class _ProfileState extends State<Profile> {
                             color: Colors.teal[50]!.withOpacity(0.5),
                             shape: BoxShape.circle,
                           ),
-                          child: const Center(
-                              child: Icon(
-                            Icons.person,
-                            size: 100,
-                          )))
+                          child: FutureBuilder(
+                            future: _getImageURL(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasError) {
+                                return const Text("error");
+                              }
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Text("loading");
+                              }
+                              String? imageURL = snapshot.data;
+                              return imageURL == null
+                                  ? const Center(
+                                      child: Icon(
+                                      Icons.person,
+                                      size: 100,
+                                    ))
+                                  : CircleAvatar(
+                                      backgroundImage: NetworkImage(imageURL),
+                                      minRadius: 75,
+                                      maxRadius: 75,
+                                    );
+                            },
+                          ))
                       : CircleAvatar(
                           backgroundImage: tempImage!.image,
                           minRadius: 75,
@@ -303,10 +322,15 @@ class _ProfileState extends State<Profile> {
     uploadTask = null;
   }
 
-  Future<String> _getImageURL() async {
-    return await FirebaseStorage.instance
-        .ref()
-        .child("users/profilePicture")
-        .getDownloadURL();
+  Future<String?> _getImageURL() async {
+    try {
+      String imageURL = await FirebaseStorage.instance
+          .ref()
+          .child("${FirebaseAuth.instance.currentUser!.uid}/profilePicture")
+          .getDownloadURL();
+      return imageURL;
+    } catch (e) {
+      throw Exception(e.toString());
+    }
   }
 }
