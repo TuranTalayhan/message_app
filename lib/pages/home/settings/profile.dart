@@ -290,7 +290,6 @@ class _ProfileState extends State<Profile> {
 
   Future<void> _uploadImage() async {
     if (image == null) {
-      print("image is null");
       return;
     }
     final path = "${FirebaseAuth.instance.currentUser!.uid}/profilePicture";
@@ -302,5 +301,12 @@ class _ProfileState extends State<Profile> {
     final snapshot = await uploadTask!.whenComplete(() {});
     downloadURL = await snapshot.ref.getDownloadURL();
     uploadTask = null;
+  }
+
+  Future<String> _getImageURL() async {
+    return await FirebaseStorage.instance
+        .ref()
+        .child("users/profilePicture")
+        .getDownloadURL();
   }
 }
