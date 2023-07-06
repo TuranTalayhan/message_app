@@ -10,6 +10,7 @@ class Themes {
           unselectedIconTheme: const IconThemeData(color: Colors.grey),
           selectedLabelStyle: const TextStyle(fontSize: 12)),
       appBarTheme: AppBarTheme(
+          titleTextStyle: const TextStyle(color: Colors.black, fontSize: 20),
           backgroundColor: ThemeData.light().scaffoldBackgroundColor,
           iconTheme: const IconThemeData(color: Colors.black)),
       listTileTheme: const ListTileThemeData(
@@ -26,6 +27,7 @@ class Themes {
         selectedLabelStyle: const TextStyle(fontSize: 12),
       ),
       appBarTheme: AppBarTheme(
+          titleTextStyle: const TextStyle(color: Colors.white, fontSize: 20),
           backgroundColor: ThemeData.dark().scaffoldBackgroundColor,
           iconTheme: const IconThemeData(color: Colors.white)),
       listTileTheme: const ListTileThemeData(

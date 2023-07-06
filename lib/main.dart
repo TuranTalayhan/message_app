@@ -1,5 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:message_app/pages/home/settings/qr_code_page.dart';
+import 'package:message_app/pages/home/settings/scanning_page.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'pages/authentication/auth_gate.dart';
@@ -36,6 +38,8 @@ class MyApp extends StatelessWidget {
         "/sign_up_page": (context) => const SignUpPage(),
         "/reset_password": (context) => const ResetPassword(),
         "/profile": (context) => const Profile(),
+        "/qr_code": (context) => const QrCodePage(),
+        "/scanning_page": (context) => const ScanningPage(),
       },
     );
   }

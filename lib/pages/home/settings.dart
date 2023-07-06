@@ -40,7 +40,9 @@ class _SettingsState extends State<Settings> {
                     title: Text(data["displayName"]),
                     subtitle: Text(data["status"]),
                     trailing: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(context, "/qr_code");
+                        },
                         icon: const Icon(
                           Icons.qr_code_scanner_rounded,
                           color: Colors.teal,

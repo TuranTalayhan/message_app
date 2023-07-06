@@ -47,6 +47,9 @@ dependencies:
   image_picker: ^1.0.0
   image_cropper: ^5.0.0
   firebase_storage: ^11.2.4
+  qr_flutter: ^4.1.0
+  screen_brightness: ^0.2.2
+  qr_code_scanner: ^1.0.1
 flutter_native_splash:
   color: "#d9d9d9"
   image: assets/MessageAppLogo.png

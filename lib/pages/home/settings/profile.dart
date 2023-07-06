@@ -38,6 +38,8 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
+        title: const Text("Profile"),
+        centerTitle: true,
       ),
       body: Center(
         child: Padding(
