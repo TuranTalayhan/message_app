@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../../../services/auth_service.dart';
 
@@ -16,6 +20,7 @@ class _ProfileState extends State<Profile> {
   final _status = TextEditingController();
   bool _isLoading = false;
   bool _error = false;
+  File? image;
 
   String _getDisplayname() {
     try {
@@ -32,7 +37,7 @@ class _ProfileState extends State<Profile> {
     }
   }
 
-  Future<void> _resetPassword() async {
+  Future<void> _updateInfo() async {
     if (_status.text.isEmpty && _displayName.text.isEmpty) {
       return;
     } else if (_status.text.isEmpty) {
@@ -70,8 +75,48 @@ class _ProfileState extends State<Profile> {
     }
   }
 
+  Future<void> _pickImage(ImageSource source) async {
+    try {
+      final image = await ImagePicker().pickImage(source: source);
+      if (image == null) {
+        return;
+      }
+      this.image = File(image.path);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          e.toString(),
+          style: const TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.red,
+      ));
+    }
+  }
+
+  Future<void> _cropImage() async {
+    CroppedFile? image = await ImageCropper().cropImage(
+        sourcePath: this.image!.path,
+        aspectRatio: const CropAspectRatio(ratioX: 150, ratioY: 150));
+
+    if (image == null) {
+      return;
+    }
+
+    setState(() {
+      this.image = File(image.path);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    Image? tempImage;
+    if (image != null) {
+      tempImage = Image.file(
+        image!,
+        height: 150,
+        width: 150,
+      );
+    }
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -82,18 +127,63 @@ class _ProfileState extends State<Profile> {
           child: Column(
             children: [
               const SizedBox(height: 50),
-              Container(
-                  height: 150,
-                  width: 150,
-                  decoration: BoxDecoration(
-                    color: Colors.teal[50]!.withOpacity(0.5),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Center(
-                      child: Icon(
-                    Icons.person,
-                    size: 100,
-                  ))),
+              GestureDetector(
+                  onTap: () => showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return SizedBox(
+                            height: 200,
+                            child: Column(children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                child: InkWell(
+                                  onTap: () async {
+                                    await _pickImage(ImageSource.camera);
+                                    await _cropImage();
+                                    if (context.mounted) {
+                                      Navigator.pop(context);
+                                    }
+                                  },
+                                  child: const ListTile(
+                                      leading: Icon(Icons.camera_alt),
+                                      title: Text("Camera")),
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () async {
+                                  await _pickImage(ImageSource.gallery);
+                                  await _cropImage();
+                                  if (context.mounted) {
+                                    Navigator.pop(context);
+                                  }
+                                },
+                                child: const ListTile(
+                                    leading: Icon(Icons.photo),
+                                    title: Text("Gallery")),
+                              ),
+                            ]),
+                          );
+                        },
+                      ),
+                  child: image == null
+                      ? Container(
+                          height: 150,
+                          width: 150,
+                          decoration: BoxDecoration(
+                            color: Colors.teal[50]!.withOpacity(0.5),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Center(
+                              child: Icon(
+                            Icons.person,
+                            size: 100,
+                          )))
+                      : CircleAvatar(
+                          backgroundImage: tempImage!.image,
+                          minRadius: 75,
+                          maxRadius: 75,
+                        )),
               const SizedBox(height: 20),
               Form(
                   child: Column(
@@ -156,7 +246,7 @@ class _ProfileState extends State<Profile> {
                               setState(() {
                                 _isLoading = true;
                               });
-                              await _resetPassword();
+                              await _updateInfo();
                               setState(() {
                                 _isLoading = false;
                               });

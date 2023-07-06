@@ -129,7 +129,7 @@ class _SettingsState extends State<Settings> {
               onTap: () {},
               child: ListTile(
                 title: const Text("Storage and data"),
-                subtitle: const Text("Network usage, stogare usage"),
+                subtitle: const Text("Network usage, storage usage"),
                 leading: Container(
                     height: 50,
                     width: 50,
