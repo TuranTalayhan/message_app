@@ -28,7 +28,7 @@ class _SettingsState extends State<Settings> {
                   return const Text("error");
                 }
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Text("loading");
+                  return const Center(child: CircularProgressIndicator());
                 }
                 Map<String, dynamic> data = snapshot.data!.data()!;
                 return InkWell(

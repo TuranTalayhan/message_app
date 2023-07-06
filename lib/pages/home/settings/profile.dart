@@ -100,7 +100,7 @@ class _ProfileState extends State<Profile> {
                               }
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
-                                return const Text("loading");
+                                return const CircularProgressIndicator();
                               }
                               String? imageURL = snapshot.data;
                               return imageURL == null
