@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -21,91 +22,8 @@ class _ProfileState extends State<Profile> {
   bool _isLoading = false;
   bool _error = false;
   File? image;
-
-  String _getDisplayname() {
-    try {
-      return Provider.of<AuthService>(context, listen: false).displayName;
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(
-          e.toString(),
-          style: const TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Colors.red,
-      ));
-      return "error";
-    }
-  }
-
-  Future<void> _updateInfo() async {
-    if (_status.text.isEmpty && _displayName.text.isEmpty) {
-      return;
-    } else if (_status.text.isEmpty) {
-      try {
-        _error = false;
-        await Provider.of<AuthService>(context, listen: false)
-            .updateInfo(displayName: _displayName.text);
-      } catch (e) {
-        _error = true;
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(
-            e.toString(),
-            style: const TextStyle(color: Colors.white),
-          ),
-          backgroundColor: Colors.red,
-        ));
-        return;
-      }
-    } else if (_displayName.text.isEmpty) {
-      try {
-        _error = false;
-        await Provider.of<AuthService>(context, listen: false)
-            .updateInfo(status: _status.text);
-      } catch (e) {
-        _error = true;
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(
-            e.toString(),
-            style: const TextStyle(color: Colors.white),
-          ),
-          backgroundColor: Colors.red,
-        ));
-        return;
-      }
-    }
-  }
-
-  Future<void> _pickImage(ImageSource source) async {
-    try {
-      final image = await ImagePicker().pickImage(source: source);
-      if (image == null) {
-        return;
-      }
-      this.image = File(image.path);
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(
-          e.toString(),
-          style: const TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Colors.red,
-      ));
-    }
-  }
-
-  Future<void> _cropImage() async {
-    CroppedFile? image = await ImageCropper().cropImage(
-        sourcePath: this.image!.path,
-        aspectRatio: const CropAspectRatio(ratioX: 150, ratioY: 150));
-
-    if (image == null) {
-      return;
-    }
-
-    setState(() {
-      this.image = File(image.path);
-    });
-  }
+  UploadTask? uploadTask;
+  String? downloadURL;
 
   @override
   Widget build(BuildContext context) {
@@ -246,6 +164,7 @@ class _ProfileState extends State<Profile> {
                               setState(() {
                                 _isLoading = true;
                               });
+                              await _uploadImage();
                               await _updateInfo();
                               setState(() {
                                 _isLoading = false;
@@ -300,5 +219,88 @@ class _ProfileState extends State<Profile> {
         ),
       ),
     );
+  }
+
+  String _getDisplayname() {
+    try {
+      return Provider.of<AuthService>(context, listen: false).displayName;
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          e.toString(),
+          style: const TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.red,
+      ));
+      return "error";
+    }
+  }
+
+  Future<void> _updateInfo() async {
+    try {
+      _error = false;
+      await Provider.of<AuthService>(context, listen: false).updateInfo(
+          status: _status.text.isNotEmpty ? _status.text : null,
+          displayName: _displayName.text.isNotEmpty ? _displayName.text : null,
+          downloadURL: downloadURL);
+    } catch (e) {
+      _error = true;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          e.toString(),
+          style: const TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.red,
+      ));
+      return;
+    }
+  }
+
+  Future<void> _pickImage(ImageSource source) async {
+    try {
+      final image = await ImagePicker().pickImage(source: source);
+      if (image == null) {
+        return;
+      }
+      this.image = File(image.path);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          e.toString(),
+          style: const TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.red,
+      ));
+    }
+  }
+
+  Future<void> _cropImage() async {
+    CroppedFile? image = await ImageCropper().cropImage(
+        sourcePath: this.image!.path,
+        aspectRatio: const CropAspectRatio(ratioX: 150, ratioY: 150));
+
+    if (image == null) {
+      return;
+    }
+
+    setState(() {
+      this.image = File(image.path);
+    });
+  }
+
+  Future<void> _uploadImage() async {
+    if (image == null) {
+      print("image is null");
+      return;
+    }
+    final path = "${FirebaseAuth.instance.currentUser!.uid}/profilePicture";
+    final File file = image!;
+
+    final ref = FirebaseStorage.instance.ref().child(path);
+    uploadTask = ref.putFile(file);
+
+    final snapshot = await uploadTask!.whenComplete(() {});
+    downloadURL = await snapshot.ref.getDownloadURL();
+    uploadTask = null;
   }
 }

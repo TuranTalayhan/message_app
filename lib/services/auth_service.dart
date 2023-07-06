@@ -30,6 +30,7 @@ class AuthService extends ChangeNotifier {
         "email": email,
         "displayName": displayName,
         "status": "Hey there! I am using MessageApp",
+        "profilePicture": "None",
       });
       return userCredential;
     } on FirebaseAuthException catch (e) {
@@ -78,8 +79,9 @@ class AuthService extends ChangeNotifier {
     }
   }
 
-  Future<void> updateInfo({String? displayName, String? status}) async {
-    if (status == null) {
+  Future<void> updateInfo(
+      {String? displayName, String? status, String? downloadURL}) async {
+    if (status == null && downloadURL == null && displayName != null) {
       try {
         await _auth.currentUser!.updateDisplayName(displayName);
         await _firestore.collection("users").doc(_auth.currentUser!.uid).set({
@@ -88,7 +90,7 @@ class AuthService extends ChangeNotifier {
       } catch (e) {
         throw Exception(e.toString());
       }
-    } else if (displayName == null) {
+    } else if (displayName == null && downloadURL == null && status != null) {
       try {
         await _auth.currentUser!.updateDisplayName(displayName);
         await _firestore.collection("users").doc(_auth.currentUser!.uid).set({
@@ -97,12 +99,52 @@ class AuthService extends ChangeNotifier {
       } catch (e) {
         throw Exception(e.toString());
       }
-    } else {
+    } else if (status == null && displayName == null && downloadURL != null) {
+      try {
+        await _auth.currentUser!.updateDisplayName(displayName);
+        await _firestore.collection("users").doc(_auth.currentUser!.uid).set({
+          "profilePicture": downloadURL,
+        }, SetOptions(merge: true));
+      } catch (e) {
+        throw Exception(e.toString());
+      }
+    } else if (displayName == null && status != null && downloadURL != null) {
+      try {
+        await _auth.currentUser!.updateDisplayName(displayName);
+        await _firestore.collection("users").doc(_auth.currentUser!.uid).set({
+          "status": status,
+          "profilePicture": downloadURL,
+        }, SetOptions(merge: true));
+      } catch (e) {
+        throw Exception(e.toString());
+      }
+    } else if (status == null && displayName != null && downloadURL != null) {
+      try {
+        await _auth.currentUser!.updateDisplayName(displayName);
+        await _firestore.collection("users").doc(_auth.currentUser!.uid).set({
+          "displayName": displayName,
+          "profilePicture": downloadURL,
+        }, SetOptions(merge: true));
+      } catch (e) {
+        throw Exception(e.toString());
+      }
+    } else if (status != null && displayName != null && downloadURL == null) {
       try {
         await _auth.currentUser!.updateDisplayName(displayName);
         await _firestore.collection("users").doc(_auth.currentUser!.uid).set({
           "displayName": displayName,
           "status": status,
+        }, SetOptions(merge: true));
+      } catch (e) {
+        throw Exception(e.toString());
+      }
+    } else if (displayName != null && status != null && downloadURL != null) {
+      try {
+        await _auth.currentUser!.updateDisplayName(displayName);
+        await _firestore.collection("users").doc(_auth.currentUser!.uid).set({
+          "displayName": displayName,
+          "status": status,
+          "profilePicture": downloadURL,
         }, SetOptions(merge: true));
       } catch (e) {
         throw Exception(e.toString());
