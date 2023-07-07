@@ -1,6 +1,7 @@
-import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:message_app/qr_scanner_overlay_shape.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 
 class ScanningPage extends StatefulWidget {
   const ScanningPage({super.key});
@@ -10,52 +11,66 @@ class ScanningPage extends StatefulWidget {
 }
 
 class _ScanningPageState extends State<ScanningPage> {
-  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-  Barcode? result;
-  QRViewController? controller;
-
-  @override
-  void reassemble() {
-    super.reassemble();
-    if (Platform.isAndroid) {
-      controller!.pauseCamera();
-    } else if (Platform.isIOS) {
-      controller!.resumeCamera();
-    }
-  }
+  MobileScannerController cameraController = MobileScannerController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          Stack(children: [
-            QRView(
-              key: qrKey,
-              onQRViewCreated: _onQRViewCreated,
-              overlay: QrScannerOverlayShape(
-                  borderColor: Colors.teal,
-                  borderWidth: 10,
-                  cutOutSize: MediaQuery.of(context).size.height * 0.8),
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        leading: IconButton(
+          color: Colors.white,
+          icon: const Icon(
+            Icons.close,
+            size: 30,
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        actions: [
+          IconButton(
+            color: Colors.white,
+            icon: ValueListenableBuilder(
+              valueListenable: cameraController.torchState,
+              builder: (context, state, child) {
+                switch (state) {
+                  case TorchState.off:
+                    return const Icon(Icons.flash_off, color: Colors.grey);
+                  case TorchState.on:
+                    return const Icon(Icons.flash_on, color: Colors.yellow);
+                }
+              },
             ),
-          ]),
+            iconSize: 32.0,
+            onPressed: () => cameraController.toggleTorch(),
+          ),
         ],
       ),
+      body: Stack(children: [
+        MobileScanner(
+          scanWindow: Rect.fromCenter(
+              center: const Offset(0, 0), width: 140, height: 140),
+          controller: cameraController,
+          onDetect: (capture) {
+            final List<Barcode> barcodes = capture.barcodes;
+            final Uint8List? image = capture.image;
+            for (final barcode in barcodes) {
+              debugPrint('Barcode found! ${barcode.rawValue}');
+            }
+          },
+        ),
+        Positioned.fill(
+            child: Container(
+          decoration: ShapeDecoration(
+              shape: QrScannerOverlayShape(
+                  borderColor: Colors.teal,
+                  borderRadius: 5,
+                  borderLength: 20,
+                  borderWidth: 5,
+                  cutOutSize: 300)),
+        ))
+      ]),
     );
-  }
-
-  void _onQRViewCreated(QRViewController controller) {
-    this.controller = controller;
-    controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        result = scanData;
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    controller?.dispose();
-    super.dispose();
   }
 }
