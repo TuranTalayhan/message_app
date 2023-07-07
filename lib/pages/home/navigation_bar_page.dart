@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../../services/auth_service.dart';
 import 'calls.dart';
 import 'chats.dart';
 import 'contacts.dart';
@@ -27,25 +25,6 @@ class _NavigationBarPageState extends State<NavigationBarPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        leading: IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
-        actions: [
-          IconButton(
-              onPressed: () async {
-                try {
-                  await Provider.of<AuthService>(context, listen: false)
-                      .signOut();
-                } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text(
-                      e.toString(),
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                    backgroundColor: Colors.red,
-                  ));
-                }
-              },
-              icon: const Icon(Icons.person)),
-        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,

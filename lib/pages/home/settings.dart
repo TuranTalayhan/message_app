@@ -123,7 +123,7 @@ class _SettingsState extends State<Settings> {
             const Divider(),
             const SizedBox(height: 10),
             InkWell(
-              onTap: () {},
+              onTap: () => Navigator.pushNamed(context, "/account"),
               child: ListTile(
                 title: const Text("Account"),
                 subtitle: const Text("Privacy, security, change number"),

@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
@@ -31,22 +29,16 @@ class _ScanningPageState extends State<ScanningPage> {
     return Scaffold(
       body: Column(
         children: <Widget>[
-          Expanded(
-            flex: 5,
-            child: QRView(
+          Stack(children: [
+            QRView(
               key: qrKey,
               onQRViewCreated: _onQRViewCreated,
+              overlay: QrScannerOverlayShape(
+                  borderColor: Colors.teal,
+                  borderWidth: 10,
+                  cutOutSize: MediaQuery.of(context).size.height * 0.8),
             ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Center(
-              child: (result != null)
-                  ? Text(
-                      'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}')
-                  : const Text('Scan a code'),
-            ),
-          )
+          ]),
         ],
       ),
     );
