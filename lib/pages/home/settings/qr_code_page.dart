@@ -66,16 +66,28 @@ class _QrCodePageState extends State<QrCodePage> {
                         right: 100,
                         bottom: 250,
                         child: Column(children: [
-                          CircleAvatar(
-                            backgroundImage:
-                                NetworkImage(data["profilePicture"]),
-                            minRadius: 30,
-                            maxRadius: 30,
-                          ),
+                          data["profilePicture"] == null
+                              ? Container(
+                                  height: 50,
+                                  width: 50,
+                                  decoration: BoxDecoration(
+                                    color: Colors.teal[50]!.withOpacity(0.5),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child:
+                                      const Center(child: Icon(Icons.person)))
+                              : CircleAvatar(
+                                  backgroundImage:
+                                      NetworkImage(data["profilePicture"]),
+                                  minRadius: 30,
+                                  maxRadius: 30,
+                                ),
                           Text(
                             data["displayName"],
                             style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: Colors.black),
                           ),
                           Text("MessageApp user",
                               style: TextStyle(color: Colors.grey[600]))

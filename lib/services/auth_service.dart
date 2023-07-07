@@ -30,8 +30,8 @@ class AuthService extends ChangeNotifier {
         "email": email,
         "displayName": displayName,
         "status": "Hey there! I am using MessageApp",
-        "profilePicture": "None",
-      });
+        "profilePicture": null,
+      }, SetOptions(merge: true));
       return userCredential;
     } on FirebaseAuthException catch (e) {
       throw Exception(e.code);

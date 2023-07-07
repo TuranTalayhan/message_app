@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:screen_brightness/screen_brightness.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -40,8 +41,24 @@ class _SettingsState extends State<Settings> {
                     title: Text(data["displayName"]),
                     subtitle: Text(data["status"]),
                     trailing: IconButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, "/qr_code");
+                        onPressed: () async {
+                          await Navigator.pushNamed(context, "/qr_code");
+                          try {
+                            _resetBrightness();
+                          } catch (e) {
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                content: Text(
+                                  e.toString(),
+                                  style: const TextStyle(color: Colors.white),
+                                ),
+                                backgroundColor: Colors.red,
+                              ));
+                            } else {
+                              throw Exception(e.toString());
+                            }
+                          }
                         },
                         icon: const Icon(
                           Icons.qr_code_scanner_rounded,
@@ -169,5 +186,13 @@ class _SettingsState extends State<Settings> {
         ),
       ),
     );
+  }
+
+  Future<void> _resetBrightness() async {
+    try {
+      await ScreenBrightness().resetScreenBrightness();
+    } catch (e) {
+      throw Exception("Failed to reset brightness");
+    }
   }
 }

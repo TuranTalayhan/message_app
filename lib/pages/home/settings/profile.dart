@@ -98,24 +98,22 @@ class _ProfileState extends State<Profile> {
                             future: _getImageURL(),
                             builder: (context, snapshot) {
                               if (snapshot.hasError) {
-                                return const Text("error");
+                                return const Center(
+                                    child: Icon(
+                                  Icons.person,
+                                  size: 100,
+                                ));
                               }
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
                                 return const CircularProgressIndicator();
                               }
                               String? imageURL = snapshot.data;
-                              return imageURL == null
-                                  ? const Center(
-                                      child: Icon(
-                                      Icons.person,
-                                      size: 100,
-                                    ))
-                                  : CircleAvatar(
-                                      backgroundImage: NetworkImage(imageURL),
-                                      minRadius: 75,
-                                      maxRadius: 75,
-                                    );
+                              return CircleAvatar(
+                                backgroundImage: NetworkImage(imageURL!),
+                                minRadius: 75,
+                                maxRadius: 75,
+                              );
                             },
                           ))
                       : CircleAvatar(
