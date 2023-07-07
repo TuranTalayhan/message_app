@@ -29,7 +29,42 @@ class _SettingsState extends State<Settings> {
                   return const Text("error");
                 }
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
+                  return ListTile(
+                      title: const Text("loading"),
+                      subtitle: const Text("loading"),
+                      trailing: IconButton(
+                          onPressed: () async {
+                            await Navigator.pushNamed(context, "/qr_code");
+                            try {
+                              _resetBrightness();
+                            } catch (e) {
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  content: Text(
+                                    e.toString(),
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                  backgroundColor: Colors.red,
+                                ));
+                              } else {
+                                throw Exception(e.toString());
+                              }
+                            }
+                          },
+                          icon: const Icon(
+                            Icons.qr_code_scanner_rounded,
+                            color: Colors.teal,
+                            size: 30,
+                          )),
+                      leading: Container(
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                            color: Colors.teal[50]!.withOpacity(0.5),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Center(child: Icon(Icons.person))));
                 }
                 Map<String, dynamic> data = snapshot.data!.data()!;
                 return InkWell(
