@@ -50,6 +50,7 @@ dependencies:
   qr_flutter: ^4.1.0
   screen_brightness: ^0.2.2
   mobile_scanner: ^3.3.0
+  share_plus: ^7.0.2
 flutter_native_splash:
   color: "#d9d9d9"
   image: assets/MessageAppLogo.png

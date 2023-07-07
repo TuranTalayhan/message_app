@@ -25,6 +25,12 @@ class _NavigationBarPageState extends State<NavigationBarPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
+        actions: [
+          if (_currentPageIndex == 2)
+            IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.person_add_alt_1_outlined))
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,

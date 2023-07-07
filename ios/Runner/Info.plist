@@ -65,5 +65,7 @@
 	<string>Needed to upload image</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Needed to upload image</string>
+	<key>UIActivityViewController</key>
+	<string>Needed to upload image</string>
 </dict>
 </plist>

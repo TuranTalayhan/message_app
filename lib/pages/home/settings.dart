@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:screen_brightness/screen_brightness.dart';
+import 'package:share_plus/share_plus.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -204,7 +205,10 @@ class _SettingsState extends State<Settings> {
             ),
             const SizedBox(height: 10),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Share.share(
+                    "Let's chat together on MessengerApp! It's a fast and simple app where we can send each other messages for free");
+              },
               child: ListTile(
                 title: const Text("Invite a friend"),
                 leading: Container(

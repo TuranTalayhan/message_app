@@ -849,8 +849,13 @@ PODS:
     - nanopb/encode (= 2.30909.0)
   - nanopb/decode (2.30909.0)
   - nanopb/encode (2.30909.0)
+  - path_provider_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
   - PromisesObjC (2.2.0)
   - screen_brightness_ios (0.1.0):
+    - Flutter
+  - share_plus (0.0.1):
     - Flutter
   - TOCropViewController (2.6.1)
 
@@ -865,7 +870,9 @@ DEPENDENCIES:
   - image_cropper (from `.symlinks/plugins/image_cropper/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - mobile_scanner (from `.symlinks/plugins/mobile_scanner/ios`)
+  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - screen_brightness_ios (from `.symlinks/plugins/screen_brightness_ios/ios`)
+  - share_plus (from `.symlinks/plugins/share_plus/ios`)
 
 SPEC REPOS:
   trunk:
@@ -921,8 +928,12 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/image_picker_ios/ios"
   mobile_scanner:
     :path: ".symlinks/plugins/mobile_scanner/ios"
+  path_provider_foundation:
+    :path: ".symlinks/plugins/path_provider_foundation/darwin"
   screen_brightness_ios:
     :path: ".symlinks/plugins/screen_brightness_ios/ios"
+  share_plus:
+    :path: ".symlinks/plugins/share_plus/ios"
 
 SPEC CHECKSUMS:
   abseil: 926fb7a82dc6d2b8e1f2ed7f3a718bce691d1e46
@@ -963,8 +974,10 @@ SPEC CHECKSUMS:
   MLKitVision: 8baa5f46ee3352614169b85250574fde38c36f49
   mobile_scanner: 47056db0c04027ea5f41a716385542da28574662
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
+  path_provider_foundation: eaf5b3e458fc0e5fbb9940fb09980e853fe058b8
   PromisesObjC: 09985d6d70fbe7878040aa746d78236e6946d2ef
   screen_brightness_ios: 715ca807df953bf676d339f11464e438143ee625
+  share_plus: 599aa54e4ea31d4b4c0e9c911bcc26c55e791028
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
 
 PODFILE CHECKSUM: 70d9d25280d0dd177a5f637cdb0f0b0b12c6a189

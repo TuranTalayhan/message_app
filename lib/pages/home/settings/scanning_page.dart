@@ -65,10 +65,10 @@ class _ScanningPageState extends State<ScanningPage> {
           decoration: ShapeDecoration(
               shape: QrScannerOverlayShape(
                   borderColor: Colors.teal,
-                  borderRadius: 5,
-                  borderLength: 20,
+                  borderRadius: 10,
+                  borderLength: 30,
                   borderWidth: 5,
-                  cutOutSize: 300)),
+                  cutOutSize: 250)),
         ))
       ]),
     );
