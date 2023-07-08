@@ -63,6 +63,7 @@ class _QrCodePageState extends State<QrCodePage> {
                       Map<String, dynamic> data = snapshot.data!.data()!;
 
                       return Positioned.fill(
+                        top: 5,
                         child: Column(children: [
                           data["profilePicture"] == null
                               ? Container(

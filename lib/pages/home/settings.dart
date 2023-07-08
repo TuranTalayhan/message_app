@@ -13,6 +13,7 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
+  final currentUid = FirebaseAuth.instance.currentUser!.uid;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +24,7 @@ class _SettingsState extends State<Settings> {
             FutureBuilder(
               future: FirebaseFirestore.instance
                   .collection('users')
-                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                  .doc(currentUid)
                   .get(),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
@@ -206,8 +207,9 @@ class _SettingsState extends State<Settings> {
             const SizedBox(height: 10),
             InkWell(
               onTap: () {
-                Share.share(
-                    "Let's chat together on MessengerApp! It's a fast and simple app where we can send each other messages for free");
+                Share.share("Let's chat together on MessageApp! "
+                    "It's a fast and simple app where we can send each other messages for free. "
+                    "My friend code is: $currentUid");
               },
               child: ListTile(
                 title: const Text("Invite a friend"),
