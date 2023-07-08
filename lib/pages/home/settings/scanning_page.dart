@@ -1,7 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:message_app/widgets/qr_scanner_overlay_shape.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import '../profile_view/profile_view_arguments.dart';
 
 class ScanningPage extends StatefulWidget {
   const ScanningPage({super.key});
@@ -50,13 +50,18 @@ class _ScanningPageState extends State<ScanningPage> {
       body: Stack(children: [
         MobileScanner(
           scanWindow: Rect.fromCenter(
-              center: const Offset(0, 0), width: 140, height: 140),
+              center: Offset(MediaQuery.of(context).size.width / 2,
+                  MediaQuery.of(context).size.height / 2),
+              width: 160,
+              height: 250),
           controller: cameraController,
           onDetect: (capture) {
             final List<Barcode> barcodes = capture.barcodes;
-            final Uint8List? image = capture.image;
             for (final barcode in barcodes) {
-              debugPrint('Barcode found! ${barcode.rawValue}');
+              if (barcode.rawValue != null) {
+                Navigator.pushReplacementNamed(context, "/profile_view",
+                    arguments: ProfileViewArguments(barcode.rawValue!));
+              }
             }
           },
         ),
