@@ -18,8 +18,6 @@ class AuthService {
       //create user in Firebase auth
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
-      //update displayname in Firebase auth
-      userCredential.user!.updateDisplayName(displayName);
       //create a document with user in Firestore
       _firestore.collection("users").doc(userCredential.user!.uid).set({
         "email": email,
@@ -76,75 +74,49 @@ class AuthService {
   }
 
   Future<void> updateInfo(
-      {String? displayName, String? status, String? downloadURL}) async {
-    if (status == null && downloadURL == null && displayName != null) {
-      try {
-        await _auth.currentUser!.updateDisplayName(displayName);
-        await _firestore.collection("users").doc(_auth.currentUser!.uid).set({
-          "displayName": displayName,
-        }, SetOptions(merge: true));
-      } catch (e) {
-        throw Exception(e.toString());
-      }
-    } else if (displayName == null && downloadURL == null && status != null) {
-      try {
-        await _auth.currentUser!.updateDisplayName(displayName);
-        await _firestore.collection("users").doc(_auth.currentUser!.uid).set({
-          "status": status,
-        }, SetOptions(merge: true));
-      } catch (e) {
-        throw Exception(e.toString());
-      }
-    } else if (status == null && displayName == null && downloadURL != null) {
-      try {
-        await _auth.currentUser!.updateDisplayName(displayName);
-        await _firestore.collection("users").doc(_auth.currentUser!.uid).set({
-          "profilePicture": downloadURL,
-        }, SetOptions(merge: true));
-      } catch (e) {
-        throw Exception(e.toString());
-      }
-    } else if (displayName == null && status != null && downloadURL != null) {
-      try {
-        await _auth.currentUser!.updateDisplayName(displayName);
-        await _firestore.collection("users").doc(_auth.currentUser!.uid).set({
-          "status": status,
-          "profilePicture": downloadURL,
-        }, SetOptions(merge: true));
-      } catch (e) {
-        throw Exception(e.toString());
-      }
-    } else if (status == null && displayName != null && downloadURL != null) {
-      try {
-        await _auth.currentUser!.updateDisplayName(displayName);
-        await _firestore.collection("users").doc(_auth.currentUser!.uid).set({
-          "displayName": displayName,
-          "profilePicture": downloadURL,
-        }, SetOptions(merge: true));
-      } catch (e) {
-        throw Exception(e.toString());
-      }
-    } else if (status != null && displayName != null && downloadURL == null) {
-      try {
-        await _auth.currentUser!.updateDisplayName(displayName);
-        await _firestore.collection("users").doc(_auth.currentUser!.uid).set({
-          "displayName": displayName,
-          "status": status,
-        }, SetOptions(merge: true));
-      } catch (e) {
-        throw Exception(e.toString());
-      }
-    } else if (displayName != null && status != null && downloadURL != null) {
-      try {
-        await _auth.currentUser!.updateDisplayName(displayName);
-        await _firestore.collection("users").doc(_auth.currentUser!.uid).set({
-          "displayName": displayName,
-          "status": status,
-          "profilePicture": downloadURL,
-        }, SetOptions(merge: true));
-      } catch (e) {
-        throw Exception(e.toString());
-      }
+      {String? displayName, String? status, String? profilePicture}) async {
+    DocumentReference ref =
+        _firestore.collection("users").doc(_auth.currentUser!.uid);
+    if (displayName != null) {
+      await updateDisplayName(ref, displayName);
+    }
+    if (status != null) {
+      await updateStatus(ref, status);
+    }
+    if (profilePicture != null) {
+      await updateProfilePicture(ref, profilePicture);
+    }
+  }
+
+  Future<void> updateDisplayName(
+      DocumentReference ref, String displayName) async {
+    try {
+      await ref.set({
+        "displayName": displayName,
+      }, SetOptions(merge: true));
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<void> updateStatus(DocumentReference ref, String status) async {
+    try {
+      await ref.set({
+        "status": status,
+      }, SetOptions(merge: true));
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<void> updateProfilePicture(
+      DocumentReference ref, String profilePicture) async {
+    try {
+      await ref.set({
+        "profilePicture": profilePicture,
+      }, SetOptions(merge: true));
+    } catch (e) {
+      throw Exception(e.toString());
     }
   }
 

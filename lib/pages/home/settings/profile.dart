@@ -20,16 +20,17 @@ class _ProfileState extends State<Profile> {
   final _status = TextEditingController();
   bool _isLoading = false;
   bool _error = false;
-  File? image;
-  UploadTask? uploadTask;
-  String? downloadURL;
+  bool _hasChanged = false;
+  File? _image;
+  UploadTask? _uploadTask;
+  String? _downloadURL;
 
   @override
   Widget build(BuildContext context) {
     Image? tempImage;
-    if (image != null) {
+    if (_image != null) {
       tempImage = Image.file(
-        image!,
+        _image!,
         height: 150,
         width: 150,
       );
@@ -85,7 +86,7 @@ class _ProfileState extends State<Profile> {
                           );
                         },
                       ),
-                  child: image == null
+                  child: _image == null
                       ? Container(
                           height: 150,
                           width: 150,
@@ -124,16 +125,6 @@ class _ProfileState extends State<Profile> {
               Form(
                   child: Column(
                 children: [
-                  TextFormField(
-                      controller: _displayName,
-                      decoration: InputDecoration(
-                        labelText: "Name",
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        hintText:
-                            FirebaseAuth.instance.currentUser!.displayName,
-                        labelStyle: const TextStyle(color: Colors.teal),
-                      )),
-                  const SizedBox(height: 20),
                   FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
                     future: FirebaseFirestore.instance
                         .collection('users')
@@ -141,37 +132,82 @@ class _ProfileState extends State<Profile> {
                         .get(),
                     builder: (_, snapshot) {
                       if (snapshot.hasError) {
-                        return TextFormField(
-                            controller: _status,
-                            decoration: InputDecoration(
-                              labelText: "Status",
-                              floatingLabelBehavior:
-                                  FloatingLabelBehavior.always,
-                              hintText: "Error = ${snapshot.error}",
-                              labelStyle: const TextStyle(color: Colors.teal),
-                            ));
+                        return Column(
+                          children: [
+                            TextFormField(
+                                controller: _displayName,
+                                decoration: InputDecoration(
+                                  labelText: "Name",
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                  hintText: "Error = ${snapshot.error}",
+                                  labelStyle:
+                                      const TextStyle(color: Colors.teal),
+                                )),
+                            const SizedBox(height: 20),
+                            TextFormField(
+                                controller: _status,
+                                decoration: InputDecoration(
+                                  labelText: "Status",
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                  hintText: "Error = ${snapshot.error}",
+                                  labelStyle:
+                                      const TextStyle(color: Colors.teal),
+                                )),
+                          ],
+                        );
                       }
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return TextFormField(
-                            controller: _status,
-                            decoration: const InputDecoration(
-                              labelText: "Status",
-                              floatingLabelBehavior:
-                                  FloatingLabelBehavior.always,
-                              hintText: "Loading",
-                              labelStyle: TextStyle(color: Colors.teal),
-                            ));
+                        return Column(
+                          children: [
+                            TextFormField(
+                                controller: _displayName,
+                                decoration: const InputDecoration(
+                                  labelText: "Name",
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                  hintText: "Loading",
+                                  labelStyle: TextStyle(color: Colors.teal),
+                                )),
+                            const SizedBox(height: 20),
+                            TextFormField(
+                                controller: _status,
+                                decoration: const InputDecoration(
+                                  labelText: "Status",
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                  hintText: "Loading",
+                                  labelStyle: TextStyle(color: Colors.teal),
+                                )),
+                          ],
+                        );
                       }
                       Map<String, dynamic> data = snapshot.data!.data()!;
 
-                      return TextFormField(
-                          controller: _status,
-                          decoration: InputDecoration(
-                            labelText: "Status",
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
-                            hintText: data['status'],
-                            labelStyle: const TextStyle(color: Colors.teal),
-                          ));
+                      return Column(
+                        children: [
+                          TextFormField(
+                              controller: _displayName,
+                              decoration: InputDecoration(
+                                labelText: "Name",
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                hintText: data["displayName"],
+                                labelStyle: const TextStyle(color: Colors.teal),
+                              )),
+                          const SizedBox(height: 20),
+                          TextFormField(
+                              controller: _status,
+                              decoration: InputDecoration(
+                                labelText: "Status",
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                hintText: data['status'],
+                                labelStyle: const TextStyle(color: Colors.teal),
+                              )),
+                        ],
+                      );
                     },
                   ),
                   const SizedBox(height: 50),
@@ -183,19 +219,29 @@ class _ProfileState extends State<Profile> {
                               setState(() {
                                 _isLoading = true;
                               });
-                              await _uploadImage();
-                              await _updateInfo();
+                              if (_image != null) {
+                                await _uploadImage();
+                              }
+                              if (_status.text.isNotEmpty ||
+                                  _displayName.text.isNotEmpty ||
+                                  _downloadURL != null) {
+                                _hasChanged = true;
+                                await _updateInfo();
+                              }
                               setState(() {
                                 _isLoading = false;
                               });
-                              if (!_error && context.mounted) {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(const SnackBar(
-                                        content: Text(
-                                          "Saved changes successfully",
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                        backgroundColor: Colors.green));
+                              if (context.mounted) {
+                                if (!_error && _hasChanged) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(const SnackBar(
+                                          content: Text(
+                                            "Saved changes successfully",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                          backgroundColor: Colors.green));
+                                }
                                 Navigator.pop(context);
                               }
                             },
@@ -246,7 +292,7 @@ class _ProfileState extends State<Profile> {
       await context.read<AuthService>().updateInfo(
           status: _status.text.isNotEmpty ? _status.text : null,
           displayName: _displayName.text.isNotEmpty ? _displayName.text : null,
-          downloadURL: downloadURL);
+          profilePicture: _downloadURL);
     } catch (e) {
       _error = true;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -266,7 +312,7 @@ class _ProfileState extends State<Profile> {
       if (image == null) {
         return;
       }
-      this.image = File(image.path);
+      _image = File(image.path);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(
@@ -280,7 +326,7 @@ class _ProfileState extends State<Profile> {
 
   Future<void> _cropImage() async {
     CroppedFile? image = await ImageCropper().cropImage(
-        sourcePath: this.image!.path,
+        sourcePath: _image!.path,
         aspectRatio: const CropAspectRatio(ratioX: 150, ratioY: 150));
 
     if (image == null) {
@@ -288,23 +334,20 @@ class _ProfileState extends State<Profile> {
     }
 
     setState(() {
-      this.image = File(image.path);
+      _image = File(image.path);
     });
   }
 
   Future<void> _uploadImage() async {
-    if (image == null) {
-      return;
-    }
     final path = "${FirebaseAuth.instance.currentUser!.uid}/profilePicture";
-    final File file = image!;
+    final File file = _image!;
 
     final ref = FirebaseStorage.instance.ref().child(path);
-    uploadTask = ref.putFile(file);
+    _uploadTask = ref.putFile(file);
 
-    final snapshot = await uploadTask!.whenComplete(() {});
-    downloadURL = await snapshot.ref.getDownloadURL();
-    uploadTask = null;
+    final snapshot = await _uploadTask!.whenComplete(() {});
+    _downloadURL = await snapshot.ref.getDownloadURL();
+    _uploadTask = null;
   }
 
   Future<String?> _getImageURL() async {
