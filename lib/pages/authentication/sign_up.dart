@@ -87,7 +87,8 @@ class _SignUpPageState extends State<SignUpPage> {
 
     try {
       _error = false;
-      await Provider.of<AuthService>(context, listen: false)
+      await context
+          .read<AuthService>()
           .signUpWithEmailAndPassword(_name.text, _email.text, _password.text);
     } catch (e) {
       _error = true;

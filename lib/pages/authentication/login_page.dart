@@ -57,7 +57,8 @@ class _LoginPageState extends State<LoginPage> {
 
     try {
       _error = false;
-      await Provider.of<AuthService>(context, listen: false)
+      await context
+          .read<AuthService>()
           .signInWithEmailAndPassword(_email.text, _password.text);
     } catch (e) {
       _error = true;

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:message_app/pages/home/profile_view/profile_view.dart';
@@ -18,8 +20,7 @@ import 'themes.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(ChangeNotifierProvider(
-      create: (context) => AuthService(), child: const MyApp()));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -27,24 +28,34 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      themeMode: ThemeMode.system,
-      theme: Themes.light,
-      darkTheme: Themes.dark,
-      debugShowCheckedModeBanner: false,
-      initialRoute: "/auth_gate",
-      routes: {
-        "/auth_gate": (context) => const AuthGate(),
-        "/auth_page": (context) => const AuthPage(),
-        "/login_page": (context) => const LoginPage(),
-        "/sign_up_page": (context) => const SignUpPage(),
-        "/reset_password": (context) => const ResetPassword(),
-        "/profile": (context) => const Profile(),
-        "/qr_code": (context) => const QrCodePage(),
-        "/scanning_page": (context) => const ScanningPage(),
-        "/account": (context) => const Account(),
-        "/profile_view": (context) => const ProfileView(),
-      },
+    return MultiProvider(
+      providers: [
+        Provider(
+            create: (_) =>
+                AuthService(FirebaseAuth.instance, FirebaseFirestore.instance)),
+        StreamProvider(
+            create: (context) => context.read<AuthService>().authStateChanges,
+            initialData: null)
+      ],
+      child: MaterialApp(
+        themeMode: ThemeMode.system,
+        theme: Themes.light,
+        darkTheme: Themes.dark,
+        debugShowCheckedModeBanner: false,
+        initialRoute: "/auth_gate",
+        routes: {
+          "/auth_gate": (context) => const AuthGate(),
+          "/auth_page": (context) => const AuthPage(),
+          "/login_page": (context) => const LoginPage(),
+          "/sign_up_page": (context) => const SignUpPage(),
+          "/reset_password": (context) => const ResetPassword(),
+          "/profile": (context) => const Profile(),
+          "/qr_code": (context) => const QrCodePage(),
+          "/scanning_page": (context) => const ScanningPage(),
+          "/account": (context) => const Account(),
+          "/profile_view": (context) => const ProfileView(),
+        },
+      ),
     );
   }
 }

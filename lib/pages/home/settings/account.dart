@@ -23,8 +23,7 @@ class _AccountState extends State<Account> {
           InkWell(
             onTap: () async {
               try {
-                await Provider.of<AuthService>(context, listen: false)
-                    .signOut();
+                await context.read<AuthService>().signOut();
                 if (context.mounted) {
                   Navigator.pop(context);
                 }

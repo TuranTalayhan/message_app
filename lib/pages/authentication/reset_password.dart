@@ -30,8 +30,7 @@ class _ResetPasswordState extends State<ResetPassword> {
   Future<void> _resetPassword() async {
     try {
       _error = false;
-      await Provider.of<AuthService>(context, listen: false)
-          .sendPasswordResetEmail(_email.text);
+      await context.read<AuthService>().sendPasswordResetEmail(_email.text);
     } catch (e) {
       _error = true;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

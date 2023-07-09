@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-class AuthService extends ChangeNotifier {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+class AuthService {
+  final FirebaseAuth _auth;
 
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore _firestore;
+
+  AuthService(this._auth, this._firestore);
 
   String get displayName {
     try {
@@ -15,6 +16,8 @@ class AuthService extends ChangeNotifier {
       throw Exception(e.code);
     }
   }
+
+  Stream<User?> get authStateChanges => _auth.authStateChanges();
 
   //sign up with email
   Future<UserCredential> signUpWithEmailAndPassword(
