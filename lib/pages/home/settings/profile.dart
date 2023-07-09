@@ -26,6 +26,13 @@ class _ProfileState extends State<Profile> {
   String? _downloadURL;
 
   @override
+  void dispose() {
+    _displayName.dispose();
+    _status.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Image? tempImage;
     if (_image != null) {

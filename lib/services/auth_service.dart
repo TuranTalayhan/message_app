@@ -120,6 +120,26 @@ class AuthService {
     }
   }
 
+  void changeEmail(String newEmail) {
+    try {
+      _firestore
+          .collection("users")
+          .doc(_auth.currentUser!.uid)
+          .set({"email": newEmail});
+      _auth.currentUser!.updateEmail(newEmail);
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  void changePassword(String newPassword) {
+    try {
+      _auth.currentUser!.updatePassword(newPassword);
+    } on FirebaseAuthException catch (e) {
+      throw Exception(e.code);
+    }
+  }
+
   Future<void> sendPasswordResetEmail(String email) async {
     try {
       return await _auth.sendPasswordResetEmail(email: email);

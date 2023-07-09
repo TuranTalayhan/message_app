@@ -4,6 +4,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:message_app/pages/home/profile_view/profile_view.dart';
 import 'package:message_app/pages/home/settings/account.dart';
+import 'package:message_app/pages/home/settings/account/change_email.dart';
+import 'package:message_app/pages/home/settings/account/change_password.dart';
 import 'package:message_app/pages/home/settings/qr_code_page.dart';
 import 'package:message_app/pages/home/settings/scanning_page.dart';
 import 'package:provider/provider.dart';
@@ -54,6 +56,8 @@ class MyApp extends StatelessWidget {
           "/scanning_page": (context) => const ScanningPage(),
           "/account": (context) => const Account(),
           "/profile_view": (context) => const ProfileView(),
+          "/change_email": (context) => const ChangeEmail(),
+          "/change_password": (context) => const ChangePassword(),
         },
       ),
     );
