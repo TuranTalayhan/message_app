@@ -13,8 +13,6 @@
 .history
 .svn/
 migrate_working_dir/
-/android/app/google-services.json
-/ios/Runner/GoogleService-Info.plist
 
 # IntelliJ related
 *.iml
@@ -77,6 +75,7 @@ unlinked_spec.ds
 **/android/local.properties
 **/android/**/GeneratedPluginRegistrant.java
 **/android/key.properties
+**/android/app/google-services.json
 *.jks
 
 # iOS/XCode related
@@ -108,6 +107,7 @@ unlinked_spec.ds
 **/ios/Flutter/flutter_export_environment.sh
 **/ios/ServiceDefinitions.json
 **/ios/Runner/GeneratedPluginRegistrant.*
+**/ios/Runner/GoogleService-Info.plist
 
 # macOS
 **/Flutter/ephemeral/
