@@ -9,14 +9,6 @@ class AuthService {
 
   AuthService(this._auth, this._firestore);
 
-  String get displayName {
-    try {
-      return _auth.currentUser!.displayName!;
-    } on FirebaseAuthException catch (e) {
-      throw Exception(e.code);
-    }
-  }
-
   Stream<User?> get authStateChanges => _auth.authStateChanges();
 
   //sign up with email

@@ -14,6 +14,10 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   final currentUid = FirebaseAuth.instance.currentUser!.uid;
+  final _userStream = FirebaseFirestore.instance
+      .collection('users')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .snapshots();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,11 +25,8 @@ class _SettingsState extends State<Settings> {
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: ListView(
           children: [
-            FutureBuilder(
-              future: FirebaseFirestore.instance
-                  .collection('users')
-                  .doc(currentUid)
-                  .get(),
+            StreamBuilder(
+              stream: _userStream,
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return const Text("error");
@@ -70,9 +71,8 @@ class _SettingsState extends State<Settings> {
                 }
                 Map<String, dynamic> data = snapshot.data!.data()!;
                 return InkWell(
-                  onTap: () async {
-                    await Navigator.pushNamed(context, "/profile");
-                    setState(() {});
+                  onTap: () {
+                    Navigator.pushNamed(context, "/profile");
                   },
                   child: ListTile(
                     title: Text(data["displayName"]),

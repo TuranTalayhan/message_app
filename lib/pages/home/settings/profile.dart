@@ -129,7 +129,8 @@ class _ProfileState extends State<Profile> {
                       decoration: InputDecoration(
                         labelText: "Name",
                         floatingLabelBehavior: FloatingLabelBehavior.always,
-                        hintText: _getDisplayname(),
+                        hintText:
+                            FirebaseAuth.instance.currentUser!.displayName,
                         labelStyle: const TextStyle(color: Colors.teal),
                       )),
                   const SizedBox(height: 20),
@@ -239,25 +240,10 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  String _getDisplayname() {
-    try {
-      return Provider.of<AuthService>(context, listen: false).displayName;
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(
-          e.toString(),
-          style: const TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Colors.red,
-      ));
-      return "error";
-    }
-  }
-
   Future<void> _updateInfo() async {
     try {
       _error = false;
-      await Provider.of<AuthService>(context, listen: false).updateInfo(
+      await context.read<AuthService>().updateInfo(
           status: _status.text.isNotEmpty ? _status.text : null,
           displayName: _displayName.text.isNotEmpty ? _displayName.text : null,
           downloadURL: downloadURL);
