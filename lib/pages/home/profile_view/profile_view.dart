@@ -102,17 +102,32 @@ class _ProfileViewState extends State<ProfileView> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      width: 50,
-                      height: 50,
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.teal),
-                      child: const Icon(
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    decoration: const BoxDecoration(
+                        shape: BoxShape.circle, color: Colors.teal),
+                    child: PopupMenuButton(
+                      color: Colors.teal,
+                      offset: const Offset(0, 50),
+                      icon: const Icon(
                         Icons.more_horiz_outlined,
                         color: Colors.white,
                       ),
+                      shape: const RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(15.0))),
+                      itemBuilder: (context) => [
+                        PopupMenuItem(
+                          onTap: () {
+                            _addPersonToContacts(args.uid);
+                          },
+                          child: const Text(
+                            "Add to contacts",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -159,4 +174,6 @@ class _ProfileViewState extends State<ProfileView> {
       )),
     );
   }
+
+  void _addPersonToContacts(String uid) {}
 }
