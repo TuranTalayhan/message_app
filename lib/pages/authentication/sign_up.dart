@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
-import '../../services/auth_service.dart';
+import '../../services/database_service.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -88,7 +88,7 @@ class _SignUpPageState extends State<SignUpPage> {
     try {
       _error = false;
       await context
-          .read<AuthService>()
+          .read<DatabaseService>()
           .signUpWithEmailAndPassword(_name.text, _email.text, _password.text);
     } catch (e) {
       _error = true;

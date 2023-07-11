@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../services/auth_service.dart';
+import '../../../services/database_service.dart';
 
 class Account extends StatefulWidget {
   const Account({super.key});
@@ -80,7 +80,7 @@ class _AccountState extends State<Account> {
 
   void _logout() async {
     try {
-      await context.read<AuthService>().signOut();
+      await context.read<DatabaseService>().signOut();
       if (context.mounted) {
         Navigator.pop(context);
       }

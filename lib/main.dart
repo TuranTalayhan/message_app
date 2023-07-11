@@ -16,7 +16,7 @@ import 'pages/authentication/login_page.dart';
 import 'pages/authentication/reset_password.dart';
 import 'pages/authentication/sign_up.dart';
 import 'pages/home/settings/profile.dart';
-import 'services/auth_service.dart';
+import 'services/database_service.dart';
 import 'themes.dart';
 
 void main() async {
@@ -33,10 +33,11 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider(
-            create: (_) =>
-                AuthService(FirebaseAuth.instance, FirebaseFirestore.instance)),
+            create: (_) => DatabaseService(
+                FirebaseAuth.instance, FirebaseFirestore.instance)),
         StreamProvider(
-            create: (context) => context.read<AuthService>().authStateChanges,
+            create: (context) =>
+                context.read<DatabaseService>().authStateChanges,
             initialData: null)
       ],
       child: MaterialApp(

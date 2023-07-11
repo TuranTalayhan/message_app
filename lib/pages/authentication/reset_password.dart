@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
-import '../../services/auth_service.dart';
+import '../../services/database_service.dart';
 
 class ResetPassword extends StatefulWidget {
   const ResetPassword({super.key});
@@ -30,7 +30,7 @@ class _ResetPasswordState extends State<ResetPassword> {
   Future<void> _resetPassword() async {
     try {
       _error = false;
-      await context.read<AuthService>().sendPasswordResetEmail(_email.text);
+      await context.read<DatabaseService>().sendPasswordResetEmail(_email.text);
     } catch (e) {
       _error = true;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

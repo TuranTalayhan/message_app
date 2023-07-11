@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import '../../../services/auth_service.dart';
+import '../../../services/database_service.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -296,7 +296,7 @@ class _ProfileState extends State<Profile> {
   Future<void> _updateInfo() async {
     try {
       _error = false;
-      await context.read<AuthService>().updateInfo(
+      await context.read<DatabaseService>().updateInfo(
           status: _status.text.isNotEmpty ? _status.text : null,
           displayName: _displayName.text.isNotEmpty ? _displayName.text : null,
           profilePicture: _downloadURL);
