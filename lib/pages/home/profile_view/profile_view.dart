@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:message_app/pages/home/profile_view/profile_view_arguments.dart';
+import 'package:message_app/services/database_service.dart';
+import 'package:provider/provider.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -26,7 +28,9 @@ class _ProfileViewState extends State<ProfileView> {
           if (snapshot.hasError) {
             return const Text("error");
           }
-          if (snapshot.connectionState == ConnectionState.waiting) {}
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
           Map<String, dynamic> data = snapshot.data!.data()!;
           return Column(children: [
             Padding(
@@ -35,11 +39,17 @@ class _ProfileViewState extends State<ProfileView> {
                 backgroundColor: Colors.teal,
                 minRadius: 52,
                 maxRadius: 52,
-                child: CircleAvatar(
-                  backgroundImage: NetworkImage(data["profilePicture"]),
-                  minRadius: 50,
-                  maxRadius: 50,
-                ),
+                child: data["profilePicture"] != null
+                    ? CircleAvatar(
+                        backgroundImage: NetworkImage(data["profilePicture"]),
+                        minRadius: 50,
+                        maxRadius: 50,
+                      )
+                    : const Icon(
+                        Icons.person,
+                        color: Colors.white,
+                        size: 80,
+                      ),
               ),
             ),
             Text(
@@ -119,8 +129,28 @@ class _ProfileViewState extends State<ProfileView> {
                               BorderRadius.all(Radius.circular(15.0))),
                       itemBuilder: (context) => [
                         PopupMenuItem(
-                          onTap: () {
-                            _addPersonToContacts(args.uid);
+                          onTap: () async {
+                            try {
+                              await _addContact(args.uid);
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                        content: Text(
+                                          "Added to contacts successfully",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                        backgroundColor: Colors.green));
+                              }
+                            } catch (e) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                content: Text(
+                                  e.toString(),
+                                  style: const TextStyle(color: Colors.white),
+                                ),
+                                backgroundColor: Colors.red,
+                              ));
+                            }
                           },
                           child: const Text(
                             "Add to contacts",
@@ -175,5 +205,7 @@ class _ProfileViewState extends State<ProfileView> {
     );
   }
 
-  void _addPersonToContacts(String uid) {}
+  Future<void> _addContact(String contactUid) async {
+    await context.read<DatabaseService>().addContact(contactUid);
+  }
 }

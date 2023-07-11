@@ -91,9 +91,9 @@ class DatabaseService {
   Future<void> updateDisplayName(
       DocumentReference ref, String displayName) async {
     try {
-      await ref.set({
+      await ref.update({
         "displayName": displayName,
-      }, SetOptions(merge: true));
+      });
     } catch (e) {
       throw Exception(e.toString());
     }
@@ -101,9 +101,9 @@ class DatabaseService {
 
   Future<void> updateStatus(DocumentReference ref, String status) async {
     try {
-      await ref.set({
+      await ref.update({
         "status": status,
-      }, SetOptions(merge: true));
+      });
     } catch (e) {
       throw Exception(e.toString());
     }
@@ -112,27 +112,27 @@ class DatabaseService {
   Future<void> updateProfilePicture(
       DocumentReference ref, String profilePicture) async {
     try {
-      await ref.set({
+      await ref.update({
         "profilePicture": profilePicture,
-      }, SetOptions(merge: true));
+      });
     } catch (e) {
       throw Exception(e.toString());
     }
   }
 
-  void changeEmail(String newEmail) {
+  void updateEmail(String newEmail) {
     try {
       _firestore
           .collection("users")
           .doc(_auth.currentUser!.uid)
-          .set({"email": newEmail});
+          .update({"email": newEmail});
       _auth.currentUser!.updateEmail(newEmail);
     } catch (e) {
       throw Exception(e.toString());
     }
   }
 
-  void changePassword(String newPassword) {
+  void updatePassword(String newPassword) {
     try {
       _auth.currentUser!.updatePassword(newPassword);
     } on FirebaseAuthException catch (e) {
@@ -145,6 +145,38 @@ class DatabaseService {
       return await _auth.sendPasswordResetEmail(email: email);
     } on FirebaseAuthException catch (e) {
       throw Exception(e.code);
+    }
+  }
+
+  Future<void> addContact(String? contactUid) async {
+    var contactSnapshot =
+        await _firestore.collection("users").doc(contactUid).get();
+    var snapshot =
+        await _firestore.collection("users").doc(_auth.currentUser!.uid).get();
+    List? list = snapshot.data()!["contacts"];
+
+    if (contactUid == _auth.currentUser!.uid) {
+      throw Exception("You can not add yourself");
+    }
+
+    if (!contactSnapshot.exists) {
+      throw Exception("Invalid friend code");
+    }
+
+    if (list != null ? list.contains(contactUid) : false) {
+      throw Exception("Already added");
+    }
+    if (contactUid != null) {
+      try {
+        await _firestore
+            .collection("users")
+            .doc(_auth.currentUser!.uid)
+            .update({
+          "contacts": FieldValue.arrayUnion([contactUid])
+        });
+      } catch (e) {
+        throw Exception(e.toString());
+      }
     }
   }
 }

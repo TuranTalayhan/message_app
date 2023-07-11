@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../services/database_service.dart';
 import 'calls.dart';
 import 'chats.dart';
 import 'contacts.dart';
@@ -13,6 +15,7 @@ class NavigationBarPage extends StatefulWidget {
 
 class _NavigationBarPageState extends State<NavigationBarPage> {
   int _currentPageIndex = 0;
+  final _contactUid = TextEditingController();
 
   final _widgets = <Widget>[
     const Chats(),
@@ -20,6 +23,13 @@ class _NavigationBarPageState extends State<NavigationBarPage> {
     const Contacts(),
     const Settings()
   ];
+
+  @override
+  void dispose() {
+    _contactUid.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +38,9 @@ class _NavigationBarPageState extends State<NavigationBarPage> {
         actions: [
           if (_currentPageIndex == 2)
             IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  _showDialog();
+                },
                 icon: const Icon(Icons.person_add_alt_1_outlined))
         ],
       ),
@@ -69,5 +81,56 @@ class _NavigationBarPageState extends State<NavigationBarPage> {
       ),
       body: _widgets[_currentPageIndex],
     );
+  }
+
+  Future<void> _addContact(String? contactUid) async {
+    await context.read<DatabaseService>().addContact(contactUid);
+  }
+
+  void _showDialog() {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20))),
+              title: const Text("Add contact"),
+              content: TextField(
+                controller: _contactUid,
+                decoration:
+                    const InputDecoration(hintText: "Enter friend code"),
+              ),
+              actions: [
+                TextButton(
+                    onPressed: () async {
+                      try {
+                        await _addContact(_contactUid.text.isNotEmpty
+                            ? _contactUid.text
+                            : null);
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                                  content: Text(
+                                    "Added to contacts successfully",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  backgroundColor: Colors.green));
+                          Navigator.pop(context);
+                        }
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(
+                            e.toString(),
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                          backgroundColor: Colors.red,
+                        ));
+                        if (context.mounted) {
+                          Navigator.pop(context);
+                        }
+                      }
+                    },
+                    child: const Text("Submit"))
+              ],
+            ));
   }
 }
