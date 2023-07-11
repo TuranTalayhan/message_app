@@ -59,8 +59,6 @@ class _ContactsState extends State<Contacts> {
                     child: CircularProgressIndicator(),
                   );
                 }
-
-                var docs = snapshot.data!.docs;
                 return ListView.builder(
                   itemCount: snapshot.data!.size,
                   itemBuilder: (context, index) {
@@ -90,7 +88,6 @@ class _ContactsState extends State<Contacts> {
                               ),
                       ),
                     );
-                    ;
                   },
                 );
               },

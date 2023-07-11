@@ -35,6 +35,14 @@ class _NavigationBarPageState extends State<NavigationBarPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
+        title: _currentPageIndex == 0
+            ? const Text("Chats")
+            : _currentPageIndex == 1
+                ? const Text("Calls")
+                : _currentPageIndex == 2
+                    ? const Text("Contacts")
+                    : const Text("Settings"),
+        centerTitle: true,
         actions: [
           if (_currentPageIndex == 2)
             IconButton(
