@@ -207,9 +207,11 @@ class _SettingsState extends State<Settings> {
             const SizedBox(height: 10),
             InkWell(
               onTap: () {
-                Share.share("Let's chat together on MessageApp! "
+                Share.share(
+                    "Let's chat together on MessageApp! "
                     "It's a fast and simple app where we can send each other messages for free. "
-                    "My friend code is: $currentUid");
+                    "My friend code is: $currentUid",
+                    subject: "Invite a friend to chat together!");
               },
               child: ListTile(
                 title: const Text("Invite a friend"),
