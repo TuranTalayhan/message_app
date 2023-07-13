@@ -160,7 +160,7 @@ class DatabaseService {
     }
 
     if (!contactSnapshot.exists) {
-      throw Exception("Invalid friend code");
+      throw Exception("Invalid contact code");
     }
 
     if (list != null ? list.contains(contactUid) : false) {

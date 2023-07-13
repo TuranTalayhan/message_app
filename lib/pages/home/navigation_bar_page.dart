@@ -44,6 +44,10 @@ class _NavigationBarPageState extends State<NavigationBarPage> {
                     : const Text("Settings"),
         centerTitle: true,
         actions: [
+          if (_currentPageIndex == 0)
+            IconButton(
+                onPressed: () => Navigator.pushNamed(context, "/create_group"),
+                icon: const Icon(Icons.add)),
           if (_currentPageIndex == 2)
             IconButton(
                 onPressed: () {
@@ -105,7 +109,7 @@ class _NavigationBarPageState extends State<NavigationBarPage> {
               content: TextField(
                 controller: _contactUid,
                 decoration:
-                    const InputDecoration(hintText: "Enter friend code"),
+                    const InputDecoration(hintText: "Enter contact code"),
               ),
               actions: [
                 TextButton(

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:message_app/pages/home/chats/create_group.dart';
 import 'package:message_app/pages/home/profile_view/profile_view.dart';
 import 'package:message_app/pages/home/settings/account.dart';
 import 'package:message_app/pages/home/settings/account/change_email.dart';
@@ -59,6 +60,7 @@ class MyApp extends StatelessWidget {
           "/profile_view": (context) => const ProfileView(),
           "/change_email": (context) => const ChangeEmail(),
           "/change_password": (context) => const ChangePassword(),
+          "/create_group": (context) => const CreateGroup(),
         },
       ),
     );
