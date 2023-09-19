@@ -127,6 +127,12 @@ class _CreateGroupState extends State<CreateGroup> {
                     ));
                   } else {
                     createGroup(_checkedUsers);
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text(
+                          "Created group successfully",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        backgroundColor: Colors.green));
                     Navigator.pop(context);
                   }
                 },
