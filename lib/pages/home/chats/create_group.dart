@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../services/database_service.dart';
 
 class CreateGroup extends StatefulWidget {
   const CreateGroup({super.key});
@@ -16,6 +19,7 @@ class _CreateGroupState extends State<CreateGroup> {
       .get();
 
   List<String> _checkedUsers = [];
+  bool _error = false;
 
   @override
   Widget build(BuildContext context) {
@@ -136,5 +140,18 @@ class _CreateGroupState extends State<CreateGroup> {
     );
   }
 
-  void createGroup() {}
+  void createGroup(List<String> checkedUsers) {
+    try {
+      context.read<DatabaseService>().createGroup(checkedUsers);
+    } catch (e) {
+      _error = true;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          e.toString(),
+          style: const TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.red,
+      ));
+    }
+  }
 }
