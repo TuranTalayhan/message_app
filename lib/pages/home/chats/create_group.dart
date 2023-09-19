@@ -121,7 +121,7 @@ class _CreateGroupState extends State<CreateGroup> {
                     backgroundColor: MaterialStateProperty.all(Colors.teal)),
                 child: const Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Text("Save changes",
+                  child: Text("Create group",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 17,
