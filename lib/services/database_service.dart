@@ -32,6 +32,23 @@ class DatabaseService {
     }
   }
 
+  void createGroup(List<String> checkedUsers) async {
+    if (checkedUsers.isNotEmpty) {
+      try {
+        //create a document with user in Firestore
+        _firestore.collection("groups").doc().set({
+          "members": checkedUsers,
+          "groupName": checkedUsers.join(", "),
+          "lastMessage": null,
+          "groupPicture": null,
+          "contacts": null,
+        }, SetOptions(merge: true));
+      } catch (e) {
+        throw Exception(e.toString());
+      }
+    }
+  }
+
   //sign in with email
   Future<UserCredential> signInWithEmailAndPassword(
       String email, String password) async {

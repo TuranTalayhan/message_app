@@ -15,7 +15,8 @@ class _CreateGroupState extends State<CreateGroup> {
       .doc(FirebaseAuth.instance.currentUser!.uid)
       .get();
 
-  List checkedUsers = [];
+  List<String> checkedUsers = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
