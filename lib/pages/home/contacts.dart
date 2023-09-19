@@ -12,7 +12,7 @@ class Contacts extends StatefulWidget {
 }
 
 class _ContactsState extends State<Contacts> {
-  var contacts = FirebaseFirestore.instance
+  final _contacts = FirebaseFirestore.instance
       .collection("users")
       .doc(FirebaseAuth.instance.currentUser!.uid)
       .get();
@@ -22,7 +22,7 @@ class _ContactsState extends State<Contacts> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: FutureBuilder(
-          future: contacts,
+          future: _contacts,
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return const Text("error");

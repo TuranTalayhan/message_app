@@ -10,12 +10,12 @@ class CreateGroup extends StatefulWidget {
 }
 
 class _CreateGroupState extends State<CreateGroup> {
-  var contacts = FirebaseFirestore.instance
+  final _contacts = FirebaseFirestore.instance
       .collection("users")
       .doc(FirebaseAuth.instance.currentUser!.uid)
       .get();
 
-  List<String> checkedUsers = [];
+  List<String> _checkedUsers = [];
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class _CreateGroupState extends State<CreateGroup> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: FutureBuilder(
-                future: contacts,
+                future: _contacts,
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
                     return const Text("error");
@@ -90,14 +90,14 @@ class _CreateGroupState extends State<CreateGroup> {
                             trailing: Checkbox(
                               onChanged: (value) {
                                 setState(() {
-                                  if (checkedUsers.contains(document.id)) {
-                                    checkedUsers.remove(document.id);
+                                  if (_checkedUsers.contains(document.id)) {
+                                    _checkedUsers.remove(document.id);
                                   } else {
-                                    checkedUsers.add(document.id);
+                                    _checkedUsers.add(document.id);
                                   }
                                 });
                               },
-                              value: checkedUsers.contains(document.id),
+                              value: _checkedUsers.contains(document.id),
                             ),
                           );
                         },
@@ -135,4 +135,6 @@ class _CreateGroupState extends State<CreateGroup> {
       ),
     );
   }
+
+  void createGroup() {}
 }
