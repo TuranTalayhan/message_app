@@ -19,7 +19,6 @@ class _CreateGroupState extends State<CreateGroup> {
       .get();
 
   List<String> _checkedUsers = [];
-  bool _error = false;
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +116,20 @@ class _CreateGroupState extends State<CreateGroup> {
             child: SizedBox(
               width: MediaQuery.of(context).size.width - 70,
               child: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  if (_checkedUsers.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text(
+                        "Please select the contacts you want in the group before creating a group",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      backgroundColor: Colors.red,
+                    ));
+                  } else {
+                    createGroup(_checkedUsers);
+                    Navigator.pop(context);
+                  }
+                },
                 style: ButtonStyle(
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
@@ -144,7 +156,6 @@ class _CreateGroupState extends State<CreateGroup> {
     try {
       context.read<DatabaseService>().createGroup(checkedUsers);
     } catch (e) {
-      _error = true;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(
           e.toString(),
