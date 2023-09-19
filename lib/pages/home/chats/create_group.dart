@@ -89,14 +89,14 @@ class _CreateGroupState extends State<CreateGroup> {
                             trailing: Checkbox(
                               onChanged: (value) {
                                 setState(() {
-                                  if (checkedUsers.contains(index)) {
-                                    checkedUsers.remove(index);
+                                  if (checkedUsers.contains(document.id)) {
+                                    checkedUsers.remove(document.id);
                                   } else {
-                                    checkedUsers.add(index);
+                                    checkedUsers.add(document.id);
                                   }
                                 });
                               },
-                              value: checkedUsers.contains(index),
+                              value: checkedUsers.contains(document.id),
                             ),
                           );
                         },
