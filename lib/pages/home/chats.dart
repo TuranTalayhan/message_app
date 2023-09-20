@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:message_app/pages/home/chats/chat_arguments.dart';
 
 class Chats extends StatefulWidget {
   const Chats({super.key});
@@ -37,7 +38,14 @@ class _ChatsState extends State<Chats> {
               itemBuilder: (context, index) {
                 var document = snapshot.data!.docs[index];
                 return InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushNamed(context, "/chat",
+                        arguments: ChatArguments(
+                            document["groupName"],
+                            document["groupPicture"],
+                            document["lastMessage"],
+                            document["members"]));
+                  },
                   child: ListTile(
                     title: Text(document["groupName"]),
                     subtitle: Text(document["lastMessage"]),
