@@ -41,11 +41,11 @@ class DatabaseService {
         checkedNames.add(displayName);
       }
       try {
-        //create a document with user in Firestore
+        //create a document with group in Firestore
         _firestore.collection("groups").doc().set({
           "members": checkedUsers,
           "groupName": checkedNames.join(", "),
-          "lastMessage": null,
+          "lastMessage": "No messages sent yet",
           "groupPicture": null,
         }, SetOptions(merge: true));
       } catch (e) {
