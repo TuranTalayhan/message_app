@@ -126,6 +126,7 @@ class _CreateGroupState extends State<CreateGroup> {
                       backgroundColor: Colors.red,
                     ));
                   } else {
+                    _checkedUsers.add(FirebaseAuth.instance.currentUser!.uid);
                     createGroup(_checkedUsers);
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text(
